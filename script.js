@@ -32,8 +32,10 @@ class MarketSentimentAnalyzer {
 
         // Get control elements
         this.resetButton = document.getElementById('resetButton');
+        this.saveButton = document.getElementById('saveButton');
         this.customizationBtn = document.getElementById('customizationBtn');
         this.customizationMenu = document.getElementById('customizationMenu');
+        this.loadingOverlay = document.getElementById('loadingOverlay');
 
         // Add event listeners
         this.addEventListeners();
@@ -58,6 +60,9 @@ class MarketSentimentAnalyzer {
 
         // Add reset button listener
         this.resetButton.addEventListener('click', () => this.resetAllValues());
+
+        // Add save button listener
+        this.saveButton.addEventListener('click', () => this.saveScreenshot());
 
         // Add customization dropdown listeners
         this.customizationBtn.addEventListener('click', (e) => {
@@ -99,6 +104,120 @@ class MarketSentimentAnalyzer {
                 arrow.classList.toggle('rotated');
             });
         });
+    }
+
+    async saveScreenshot() {
+        try {
+            // Show loading overlay
+            this.showLoadingOverlay();
+            
+            // Disable save button during processing
+            this.saveButton.disabled = true;
+            
+            // Get the screenshot area element
+            const screenshotArea = document.getElementById('screenshot-area');
+            
+            if (!screenshotArea) {
+                throw new Error('Screenshot area not found');
+            }
+
+            // html2canvas options for better quality
+            const options = {
+                backgroundColor: '#ffffff',
+                scale: 2, // Higher resolution
+                useCORS: true,
+                allowTaint: true,
+                scrollX: 0,
+                scrollY: 0,
+                width: screenshotArea.offsetWidth,
+                height: screenshotArea.offsetHeight,
+                onclone: (clonedDoc) => {
+                    // Ensure cloned elements maintain their styling
+                    const clonedArea = clonedDoc.getElementById('screenshot-area');
+                    if (clonedArea) {
+                        clonedArea.style.position = 'static';
+                        clonedArea.style.transform = 'none';
+                    }
+                }
+            };
+
+            // Generate canvas from the screenshot area
+            const canvas = await html2canvas(screenshotArea, options);
+            
+            // Convert canvas to blob
+            const blob = await new Promise(resolve => {
+                canvas.toBlob(resolve, 'image/png', 1.0);
+            });
+
+            // Generate filename
+            const ticker = this.tickerInput.value.trim().toUpperCase();
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, '-');
+            const filename = ticker 
+                ? `${ticker}_Market_Analysis_${timestamp}.png`
+                : `Market_Analysis_${timestamp}.png`;
+
+            // Create download link
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Clean up
+            URL.revokeObjectURL(url);
+            
+            // Show success feedback
+            this.showSaveSuccess();
+            
+        } catch (error) {
+            console.error('Error saving screenshot:', error);
+            this.showSaveError(error.message);
+        } finally {
+            // Hide loading overlay and re-enable button
+            this.hideLoadingOverlay();
+            this.saveButton.disabled = false;
+        }
+    }
+
+    showLoadingOverlay() {
+        this.loadingOverlay.classList.add('show');
+    }
+
+    hideLoadingOverlay() {
+        this.loadingOverlay.classList.remove('show');
+    }
+
+    showSaveSuccess() {
+        // Add visual feedback to save button
+        const originalText = this.saveButton.innerHTML;
+        this.saveButton.innerHTML = '<span class="save-icon">✅</span>Saved!';
+        this.saveButton.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
+        
+        setTimeout(() => {
+            this.saveButton.innerHTML = originalText;
+            this.saveButton.style.background = 'linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%)';
+        }, 2000);
+    }
+
+    showSaveError(message) {
+        // Add error feedback to save button
+        const originalText = this.saveButton.innerHTML;
+        this.saveButton.innerHTML = '<span class="save-icon">❌</span>Error';
+        this.saveButton.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+        
+        console.error('Screenshot save error:', message);
+        
+        setTimeout(() => {
+            this.saveButton.innerHTML = originalText;
+            this.saveButton.style.background = 'linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%)';
+        }, 3000);
+        
+        // You could also show a more user-friendly error message here
+        alert('Failed to save screenshot. Please try again.');
     }
 
     toggleCustomizationDropdown() {

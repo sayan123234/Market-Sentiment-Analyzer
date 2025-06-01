@@ -20,6 +20,10 @@
                         <input type="text" id="tickerInput" placeholder="e.g., AAPL, TSLA">
                     </div>
                     <div class="control-buttons">
+                        <button id="saveButton" class="save-button">
+                            <span class="save-icon">📸</span>
+                            Save Screenshot
+                        </button>
                         <button id="resetButton" class="reset-button">
                             <span class="reset-icon">🔄</span>
                             Reset All
@@ -117,7 +121,7 @@
                 </div>
             </div>
 
-            <div class="results-section">
+            <div class="results-section" id="screenshot-area">
                 <div class="results-table">
                     <div class="table-header">
                         <div class="table-header-cell bullish-header">Bullish Arguments</div>
@@ -168,6 +172,16 @@
         </div>
     </div>
 
+    <!-- Loading indicator for screenshot -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Generating screenshot...</p>
+        </div>
+    </div>
+
+    <!-- Include html2canvas library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
