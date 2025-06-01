@@ -3,6 +3,13 @@ class MarketSentimentAnalyzer {
         this.bullishInputs = [];
         this.bearishInputs = [];
         this.colorInputs = {};
+        this.tickerInput = null;
+        this.defaultValues = {
+            bullishColor: '#27ae60',
+            bearishColor: '#e74c3c',
+            neutralColor: '#95a5a6',
+            bgColor: '#ffffff'
+        };
         this.init();
     }
 
@@ -20,6 +27,14 @@ class MarketSentimentAnalyzer {
             background: document.getElementById('bgColor')
         };
 
+        // Get ticker input
+        this.tickerInput = document.getElementById('tickerInput');
+
+        // Get control elements
+        this.resetButton = document.getElementById('resetButton');
+        this.customizationBtn = document.getElementById('customizationBtn');
+        this.customizationMenu = document.getElementById('customizationMenu');
+
         // Add event listeners
         this.addEventListeners();
         
@@ -33,20 +48,45 @@ class MarketSentimentAnalyzer {
             input.addEventListener('input', () => this.updateAnalysis());
         });
 
+        // Add listener to ticker input
+        this.tickerInput.addEventListener('input', () => this.updateTickerDisplay());
+
         // Add listeners to color inputs
         Object.values(this.colorInputs).forEach(input => {
             input.addEventListener('change', () => this.updateColors());
         });
 
-        // Add dropdown functionality
-        this.addDropdownListeners();
+        // Add reset button listener
+        this.resetButton.addEventListener('click', () => this.resetAllValues());
+
+        // Add customization dropdown listeners
+        this.customizationBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleCustomizationDropdown();
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!this.customizationMenu.contains(e.target) && !this.customizationBtn.contains(e.target)) {
+                this.closeCustomizationDropdown();
+            }
+        });
+
+        // Prevent dropdown from closing when clicking inside
+        this.customizationMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Add argument section dropdown functionality
+        this.addArgumentDropdownListeners();
 
         // Initial color setup
         this.updateColors();
+        this.updateTickerDisplay();
     }
 
-    addDropdownListeners() {
-        const dropdownHeaders = document.querySelectorAll('.dropdown-header');
+    addArgumentDropdownListeners() {
+        const dropdownHeaders = document.querySelectorAll('.arguments-group .dropdown-header');
         
         dropdownHeaders.forEach(header => {
             header.addEventListener('click', () => {
@@ -59,6 +99,79 @@ class MarketSentimentAnalyzer {
                 arrow.classList.toggle('rotated');
             });
         });
+    }
+
+    toggleCustomizationDropdown() {
+        const isOpen = this.customizationMenu.classList.contains('show');
+        
+        if (isOpen) {
+            this.closeCustomizationDropdown();
+        } else {
+            this.openCustomizationDropdown();
+        }
+    }
+
+    openCustomizationDropdown() {
+        this.customizationMenu.classList.add('show');
+        this.customizationBtn.classList.add('active');
+    }
+
+    closeCustomizationDropdown() {
+        this.customizationMenu.classList.remove('show');
+        this.customizationBtn.classList.remove('active');
+    }
+
+    updateTickerDisplay() {
+        const ticker = this.tickerInput.value.trim().toUpperCase();
+        const tickerDisplay = document.getElementById('tickerDisplay');
+        
+        if (ticker) {
+            tickerDisplay.textContent = ticker;
+            tickerDisplay.style.display = 'block';
+        } else {
+            tickerDisplay.textContent = '';
+            tickerDisplay.style.display = 'none';
+        }
+    }
+
+    resetAllValues() {
+        // Add visual feedback
+        this.resetButton.style.transform = 'scale(0.95)';
+        
+        setTimeout(() => {
+            // Reset all argument inputs
+            [...this.bullishInputs, ...this.bearishInputs].forEach(input => {
+                input.value = '';
+            });
+
+            // Reset ticker input
+            this.tickerInput.value = '';
+
+            // Reset color inputs to default values
+            this.colorInputs.bullish.value = this.defaultValues.bullishColor;
+            this.colorInputs.bearish.value = this.defaultValues.bearishColor;
+            this.colorInputs.neutral.value = this.defaultValues.neutralColor;
+            this.colorInputs.background.value = this.defaultValues.bgColor;
+
+            // Reset argument dropdown states (expand all)
+            document.querySelectorAll('.arguments-group .dropdown-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.arguments-group .dropdown-arrow').forEach(arrow => {
+                arrow.classList.remove('rotated');
+            });
+
+            // Close customization dropdown
+            this.closeCustomizationDropdown();
+
+            // Update displays
+            this.updateColors();
+            this.updateAnalysis();
+            this.updateTickerDisplay();
+
+            // Reset button visual feedback
+            this.resetButton.style.transform = 'scale(1)';
+        }, 150);
     }
 
     updateAnalysis() {

@@ -9,8 +9,51 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Market Sentiment Analyzer</h1>
-            <p>Compare bullish and bearish arguments to determine market bias</p>
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>📊 Market Sentiment Analyzer</h1>
+                    <p>Compare bullish and bearish arguments to determine market bias</p>
+                </div>
+                <div class="header-controls">
+                    <div class="ticker-input-container">
+                        <label for="tickerInput">Ticker/Symbol:</label>
+                        <input type="text" id="tickerInput" placeholder="e.g., AAPL, TSLA">
+                    </div>
+                    <div class="control-buttons">
+                        <button id="resetButton" class="reset-button">
+                            <span class="reset-icon">🔄</span>
+                            Reset All
+                        </button>
+                        <div class="customization-dropdown">
+                            <button class="dropdown-btn" id="customizationBtn">
+                                <span class="customize-icon">🎨</span>
+                                Customize
+                                <span class="dropdown-arrow">▼</span>
+                            </button>
+                            <div class="dropdown-menu" id="customizationMenu">
+                                <div class="color-input-group">
+                                    <div class="color-input">
+                                        <label for="bullishColor">Bullish Color:</label>
+                                        <input type="color" id="bullishColor" value="#27ae60">
+                                    </div>
+                                    <div class="color-input">
+                                        <label for="bearishColor">Bearish Color:</label>
+                                        <input type="color" id="bearishColor" value="#e74c3c">
+                                    </div>
+                                    <div class="color-input">
+                                        <label for="neutralColor">Neutral Color:</label>
+                                        <input type="color" id="neutralColor" value="#95a5a6">
+                                    </div>
+                                    <div class="color-input">
+                                        <label for="bgColor">Background Color:</label>
+                                        <input type="color" id="bgColor" value="#ffffff">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="main-content">
@@ -72,28 +115,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="customization-section">
-                    <h3>🎨 Customization</h3>
-                    <div class="color-input-group">
-                        <div class="color-input">
-                            <label for="bullishColor">Bullish Color:</label>
-                            <input type="color" id="bullishColor" value="#27ae60">
-                        </div>
-                        <div class="color-input">
-                            <label for="bearishColor">Bearish Color:</label>
-                            <input type="color" id="bearishColor" value="#e74c3c">
-                        </div>
-                        <div class="color-input">
-                            <label for="neutralColor">Neutral Color:</label>
-                            <input type="color" id="neutralColor" value="#95a5a6">
-                        </div>
-                        <div class="color-input">
-                            <label for="bgColor">Background Color:</label>
-                            <input type="color" id="bgColor" value="#ffffff">
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="results-section">
@@ -121,7 +142,10 @@
                 </div>
 
                 <div class="bias-section">
-                    <div class="bias-header" id="biasHeader">Market Bias</div>
+                    <div class="bias-header" id="biasHeader">
+                        <span id="tickerDisplay"></span>
+                        <span id="biasHeaderText">Market Bias</span>
+                    </div>
                     <div class="bias-content">
                         <div class="bias-result" id="biasResult">Neutral</div>
                         <div class="bias-percentage" id="biasPercentage">0%</div>
