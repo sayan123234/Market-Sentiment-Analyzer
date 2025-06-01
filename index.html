@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bearish vs Bullish Arguments Analyzer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Market Sentiment Analyzer</h1>
+            <p>Compare bullish and bearish arguments to determine market bias</p>
+        </div>
+
+        <div class="main-content">
+            <div class="inputs-section">
+                <div class="arguments-group bullish-group">
+                    <h3 class="dropdown-header" data-target="bullish-inputs">
+                        <span class="icon">📈</span>Bullish Arguments
+                        <span class="dropdown-arrow">▼</span>
+                    </h3>
+                    <div class="dropdown-content" id="bullish-inputs">
+                        <div class="argument-input">
+                            <label for="bullish1">Argument 1:</label>
+                            <input type="text" id="bullish1" placeholder="Enter bullish argument...">
+                        </div>
+                        <div class="argument-input">
+                            <label for="bullish2">Argument 2:</label>
+                            <input type="text" id="bullish2" placeholder="Enter bullish argument...">
+                        </div>
+                        <div class="argument-input">
+                            <label for="bullish3">Argument 3:</label>
+                            <input type="text" id="bullish3" placeholder="Enter bullish argument...">
+                        </div>
+                        <div class="argument-input">
+                            <label for="bullish4">Argument 4:</label>
+                            <input type="text" id="bullish4" placeholder="Enter bullish argument...">
+                        </div>
+                        <div class="argument-input">
+                            <label for="bullish5">Argument 5:</label>
+                            <input type="text" id="bullish5" placeholder="Enter bullish argument...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arguments-group bearish-group">
+                    <h3 class="dropdown-header" data-target="bearish-inputs">
+                        <span class="icon">📉</span>Bearish Arguments
+                        <span class="dropdown-arrow">▼</span>
+                    </h3>
+                    <div class="dropdown-content" id="bearish-inputs">
+                        <div class="argument-input">
+                            <label for="bearish1">Argument 1:</label>
+                            <input type="text" id="bearish1" placeholder="Enter bearish argument...">
+                        </div>
+                        <div class="argument-input">
+                            <label for="bearish2">Argument 2:</label>
+                            <input type="text" id="bearish2" placeholder="Enter bearish argument...">
+                        </div>
+                        <div class="argument-input">
+                            <label for="bearish3">Argument 3:</label>
+                            <input type="text" id="bearish3" placeholder="Enter bearish argument...">
+                        </div>
+                        <div class="argument-input">
+                            <label for="bearish4">Argument 4:</label>
+                            <input type="text" id="bearish4" placeholder="Enter bearish argument...">
+                        </div>
+                        <div class="argument-input">
+                            <label for="bearish5">Argument 5:</label>
+                            <input type="text" id="bearish5" placeholder="Enter bearish argument...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customization-section">
+                    <h3>🎨 Customization</h3>
+                    <div class="color-input-group">
+                        <div class="color-input">
+                            <label for="bullishColor">Bullish Color:</label>
+                            <input type="color" id="bullishColor" value="#27ae60">
+                        </div>
+                        <div class="color-input">
+                            <label for="bearishColor">Bearish Color:</label>
+                            <input type="color" id="bearishColor" value="#e74c3c">
+                        </div>
+                        <div class="color-input">
+                            <label for="neutralColor">Neutral Color:</label>
+                            <input type="color" id="neutralColor" value="#95a5a6">
+                        </div>
+                        <div class="color-input">
+                            <label for="bgColor">Background Color:</label>
+                            <input type="color" id="bgColor" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="results-table">
+                    <div class="table-header">
+                        <div class="table-header-cell bullish-header">Bullish Arguments</div>
+                        <div class="table-header-cell bearish-header">Bearish Arguments</div>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-column">
+                            <div class="table-cell" id="bullish-cell-1"></div>
+                            <div class="table-cell" id="bullish-cell-2"></div>
+                            <div class="table-cell" id="bullish-cell-3"></div>
+                            <div class="table-cell" id="bullish-cell-4"></div>
+                            <div class="table-cell" id="bullish-cell-5"></div>
+                        </div>
+                        <div class="table-column">
+                            <div class="table-cell" id="bearish-cell-1"></div>
+                            <div class="table-cell" id="bearish-cell-2"></div>
+                            <div class="table-cell" id="bearish-cell-3"></div>
+                            <div class="table-cell" id="bearish-cell-4"></div>
+                            <div class="table-cell" id="bearish-cell-5"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bias-section">
+                    <div class="bias-header" id="biasHeader">Market Bias</div>
+                    <div class="bias-content">
+                        <div class="bias-result" id="biasResult">Neutral</div>
+                        <div class="bias-percentage" id="biasPercentage">0%</div>
+                        <div class="bias-bar">
+                            <div class="bias-fill" id="biasFill"></div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat bullish-stat">
+                                <div class="stat-value" id="bullishCount">0</div>
+                                <div>Bullish</div>
+                            </div>
+                            <div class="stat bearish-stat">
+                                <div class="stat-value" id="bearishCount">0</div>
+                                <div>Bearish</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
